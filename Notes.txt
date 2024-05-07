@@ -1,4 +1,25 @@
 Cuando se pagina en Laravel (usar el " ::paginate(*#*) " o " ::latest()->paginate(*#*) "), la variable a la que se le asigna este...
-...valor por defecto ya tendrá los atributos "links" y "nestPageUrl". Por lo que donde se vea " $*variable*->links() " y ... 
-... " $*variable*->nextPageUrl() " se está haciendo uso de esos valores (que son los que se generan para hacer lo de la paginación... 
+...valor por defecto ya tendrá los atributos "links" y "nestPageUrl". Por lo que donde se vea " $*variable*->links() " y ...
+... " $*variable*->nextPageUrl() " se está haciendo uso de esos valores (que son los que se generan para hacer lo de la paginación...
 ...que se hace por defecto en Laravel (los números de página y las flechas en forma de hipervínculos)
+
+
+
+//COMANDOS EMPLEADOS y ACCIONES REQUERIDAS
+
+composer create-project laravel/laravel Test_scroll-infinito-ajax
+cd Test_scroll-infinito-ajax
+php artisan serve
+
+*Crear la BD, llamada en este caso "scroll-infinito-ajax" (y con charset "utf8mb4" y collation "utf8mb4_spanish_ci")
+-Poner en el .env las credenciales y la BD
+
+php artisan make:model Post -m -f (crea el Model, la migración en "database"->"migrations" y los factories en "database"->"factories") *Los factories sirven para ver que valores se daran a cierto modelo (en tabla en BD) cada que se ejecuten
+
+php artisan make:seeder PostTableSeeder (*Los Seeder son para "poblar" automáticamente la tabla correspondiente de la BD, con respecto a lo definido en el Factory correspondiente, dentro del archivo geerado se coloca la cantida de registros a crear empleando el Factory)
+
+*Colocar en el DatabaseSeeder.php la "llamada al Seeder recién creado"
+
+php artisan db:seed (ejecuta el Seeder que se definió dentro de DatabaseSeeder.php que se ejecutará, por lo que con esto se generan ya los registros en la tabla correspondiente en la BD)
+
+php artisan make:controller PostController

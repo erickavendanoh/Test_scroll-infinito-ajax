@@ -14,6 +14,7 @@
     <div class="container mt-5">
         <h2 class="mb-4">Posts</h2>
         <div id="posts-container">
+            {{-- La parte HTML (y con php (blade.php)) que muestra los registros correspondientes a cada paginación --}}
             @include('posts.load')
         </div>
     </div>
@@ -23,12 +24,12 @@
     <script>
         $(document).ready(function() {
             // console.log("jQuery is workinggg!");
-            let nextPageUrl = '{{ $posts->nextPageUrl() }}'; //Se asigna valor del otro bloque con información siguiente (paginación, generado por Laravel)
+            let nextPageUrl = '{{ $posts->nextPageUrl() }}'; //Se asigna valor del otro bloque con información siguiente (paginación, generado por Laravel) si es que aún quedan registros por mostrar
 
-            $(window).scroll(function() {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-                    if (nextPageUrl) { //si sí tuvo valor esa variable, ósea que si se generó por Laravel otro bloque con información y su respectivo link
-                        console.log("Sigue una página más");
+            $(window).scroll(function() { //se ejecuta cada que se hace scroll a la página
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) { //detecta cuando se llega al final
+                    if (nextPageUrl) { //Valida si sí tuvo valor esa variable, ósea que si se generó por Laravel otro bloque con información y su respectivo link, por lo que en la asignación de ese valor a variable "nextPageUrl" no fue null
+                        // console.log("Sigue una página más");
                         loadMorePosts();
                     }
                 }
@@ -41,19 +42,18 @@
                 $.ajax({
                     url: nextPageUrl,
                     type: 'get',
+                    //Antes de mandar la petición...
                     beforeSend: function(){
-                        nextPageUrl = '';
+                        nextPageUrl = ''; //se establece valor de variable "nextPageUrl" en vacío. Se "limpia"
                     },
-                    // "data" trae lo generado en PostController despues de hacer la peticion ajax y lo generado para "view" y "nextPageUrl" alli
+
+                    //Ya en este punto como se hizo una petición (ajax) el PostController la detecta en su método index() y se vuelve a ejecutar lo de dentro de él, que es que se hace la siguiente paginación (también por ende se genera el siguiente "nextPageUrl()") y se entra al if que detecta y "procesa" la petición ajax
+                    // "data" trae lo generado en PostController despues de hacer la peticion ajax y lo generado para "view" (la generación de la vista de load.blade.php con los "posts" de la siguiente paginación) y "nextPageUrl" allí, y acá ya se emplean esas variables y sus valores
                     success: function(data){
-
                         nextPageUrl = data.nextPageUrl;
-                        $('#posts-container').append(data.view);
-
+                        $('#posts-container').append(data.view); //se agrega a ese div la vista (que llega mediante un callback, con relación a la respuesta)
                     },
                     error: function(xhr, status, error){
-
-
                         console.error("Error loading more posts:", error);
                         alert("error: " + error);
                     }
