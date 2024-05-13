@@ -15,6 +15,6 @@ class PostController extends Controller
             $view = view('posts.load', compact('posts'))->render();
             return Response::json(['view'=>$view, 'nextPageUrl'=>$posts->nextPageUrl()]);
         }
-        return view('posts.index', ['posts'=>$posts]);
+        return view('posts.index', ['posts'=>$posts]); //Solo entra acá la primera vez, cuando se carga la página por primera vez, ya después estará entrando en el if, por lo de que jQuery detectará lo del find el scroll y se hará la petición ajax
     }
 }
