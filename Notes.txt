@@ -15,6 +15,7 @@ php artisan serve
 -Poner en el .env las credenciales y la BD
 
 php artisan make:model Post -m -f (crea el Model, la migración en "database"->"migrations" y los factories en "database"->"factories") *Los factories sirven para ver que valores se daran a cierto modelo (en tabla en BD) cada que se ejecuten
+(Esta es la forma abreviada, en el video lo hace con comandos separados: " php artisan make:model Post ", " php artisan make:factory PostFactory --model=Post ")
 
 php artisan make:seeder PostTableSeeder (*Los Seeder son para "poblar" automáticamente la tabla correspondiente de la BD, con respecto a lo definido en el Factory correspondiente, dentro del archivo geerado se coloca la cantida de registros a crear empleando el Factory)
 
